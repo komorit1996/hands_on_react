@@ -1,0 +1,93 @@
+useAnykeyrender();
+
+const useFn = useCallback(() => {
+  console.log("hello")
+  console.log("world")
+},[])
+
+useEffect(() => {
+  console.log("fresh render")
+}, [useFn])
+
+return (
+  <>
+    <WordCount>test This test text and good job code. add this code. this code</WordCount>
+  </>
+);
+
+------------------------------------------------------------------------------------------------
+
+import React, { useEffect, useState } from 'react';
+import './App.css';
+
+function App() {
+  const [checked, setChecked] = useState(false);
+  const [val, setVal] = useState('');
+  const [phrase, setPhrase] = useState('default phrase');
+  const [allPosts, setAllPosts] = useState(["kizi1", "kizi2", "kizi3", "kizi4", "kizi5"]);
+
+  const createPhrase = () => {
+    setPhrase(val);
+    setVal('');
+  };
+
+  useEffect(() => {
+    console.log(checked ? 'チェックされました' : 'チェックされていません');
+    localStorage.setItem('Checkbox-value', checked);
+  }, [checked]);
+
+  useEffect(() => {
+    console.log(`change val :${val}`);
+  }, [val]);
+
+  useEffect(() => {
+    console.log(`change phrase :${phrase}`);
+  }, [phrase]);
+
+  const addPost = (post) => {
+    setAllPosts((prevPosts) => [post, ...prevPosts]);
+  };
+
+  // 
+  
+
+  return (
+    <div>
+      <div>
+        <div>記事の表示と追加</div>
+        <input type="text" onClick={(e) => addPost(e.target.value)} />
+        {allPosts.map((e, index) => (
+          <p key={index}>{e}</p>
+        ))}
+      </div>
+
+      <div className="">-----</div>
+
+      <div>
+        <label>チェックボックス</label>
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={() => setChecked(!checked)}
+        />
+        <div>{checked ? 'チェックされました' : 'チェックされていません'}</div>
+      </div>
+
+      <div className="">-----</div>
+
+      <div>
+        <label>フレーズテスト</label>
+        <input
+          type="text"
+          placeholder={phrase}
+          value={val}
+          onChange={(e) => setVal(e.target.value)}
+        />
+        <button onClick={createPhrase}>set Phrase</button>
+        <h2>{phrase}</h2>
+      </div>
+    </div>
+  );
+}
+
+export default App;
